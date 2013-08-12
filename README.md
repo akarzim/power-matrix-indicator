@@ -4,7 +4,7 @@ power-matrix-indicator
 This is a free, open-source, Chrome Extension for PowerMatrix Game players.
 When installed, it updates the favicon of powermatrixgame.com with the current mood of your population.
 
-![Satisfaction](https://raw.github.com/akarzim/power-matrix-indicator/gh-pages/power-matrix-indicator.gif)
+![Satisfaction](https://akarzim.github.io/power-matrix-indicator/power-matrix-indicator.gif)
 
 To install:
 
