@@ -13,5 +13,18 @@ $(document).ready(function ($) {
         return this;
     }
 
-    $('#happiness').watch('background-position', $.fn.updateIndicator).updateIndicator();
+		// create an observer
+		var
+		updateIndicatorOnClassMutation = function (mutation) {
+			if (mutation.type === 'attributes' && mutation.attributeName === 'class' ) {
+				$(mutation.target).updateIndicator();
+			}
+		},
+		observer = new MutationObserver(function(mutations) {
+			mutations.forEach(this);
+		}.bind(updateIndicatorOnClassMutation));
+		// observe happiness
+		observer.observe(document.getElementById('happiness'), {attributes: true});
+		$('#happiness').updateIndicator();
+
 });
