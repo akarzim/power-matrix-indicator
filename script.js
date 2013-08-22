@@ -9,7 +9,7 @@ $(document).ready(function ($) {
 
     $.fn.updateIndicator = function () {
         var mood = this.mood();
-        if (mood) { $('link[rel="icon"]').attr('href', chrome.extension.getURL(mood + '.png')); }
+        if (mood) { document.querySelector('link[rel="icon"]').setAttribute('href', chrome.extension.getURL(mood + '.png')); }
         return this;
     }
 
