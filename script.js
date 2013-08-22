@@ -7,24 +7,25 @@ $(document).ready(function ($) {
         return null;
     }
 
-    $.fn.updateIndicator = function () {
-        var mood = this.mood();
-        if (mood) { document.querySelector('link[rel="icon"]').setAttribute('href', chrome.extension.getURL(mood + '.png')); }
-        return this;
+     function updateIndicator (el) {
+        var mood = $(el).mood();
+        if (mood) { icon.setAttribute('href', chrome.extension.getURL(mood + '.png')); }
     }
 
 		// create an observer
 		var
+		happiness = document.getElementById('happiness'),
+		icon = document.querySelector('link[rel="icon"]'),
 		updateIndicatorOnClassMutation = function (mutation) {
 			if (mutation.type === 'attributes' && mutation.attributeName === 'class' ) {
-				$(mutation.target).updateIndicator();
+				updateIndicator(mutation.target);
 			}
 		},
 		observer = new MutationObserver(function(mutations) {
 			mutations.forEach(this);
 		}.bind(updateIndicatorOnClassMutation));
 		// observe happiness
-		observer.observe(document.getElementById('happiness'), {attributes: true});
-		$('#happiness').updateIndicator();
+		observer.observe(happiness, {attributes: true});
+		updateIndicator(happiness);
 
 });
