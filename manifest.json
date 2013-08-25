@@ -1,7 +1,7 @@
 {
 	"name": "PowerMatrixGame Indicator",
-    "manifest_version": 2,
-	"version": "0.2",
+    "manifest_version": 3,
+	"version": "0.3",
 	"description": "Tell you when you're loosing citizens",
 	"icons": {	"16": "icon16.png",
 				"48": "icon48.png",
@@ -9,7 +9,8 @@
 	"content_scripts": [
 		{
 			"matches": ["*://*.powermatrixgame.com/game/start/*"],
-			"js": ["jquery-1.6.4.min.js", "jquery.watch.min.js", "script.js"]
+			"js": ["script.js"],
+			"run_at": "document_end"
 		}
 	],
     "web_accessible_resources": [ "happy.png", "neutral.png", "sad.png", "error.png" ],

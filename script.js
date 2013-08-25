@@ -1,17 +1,31 @@
-$(document).ready(function ($) {
-    $.fn.mood = function () {
-        var i, moods = ['happy', 'neutral', 'sad'];
-        for (i = 0; i < moods.length; i++) {
-            if (this.hasClass(moods[i])) { return moods[i]; }
-        }
-        return null;
-    }
+// Power Matrix Tool namespace
+PMT = {};
 
-    $.fn.updateIndicator = function () {
-        var mood = this.mood();
-        if (mood) { $('link[rel="icon"]').attr('href', chrome.extension.getURL(mood + '.png')); }
-        return this;
-    }
+PMT.moodList = ['happy', 'neutral', 'sad'];
+PMT.mood = function (moodEl) {
+	return PMT.moodList.reduce(function (prev, mood) { return prev || moodEl.classList.contains(mood) && mood}, false);
+};
 
-    $('#happiness').watch('background-position', $.fn.updateIndicator).updateIndicator();
+PMT.updateIndicator = function (target, moodEl) {
+		var mood = PMT.mood(moodEl);
+		if (mood) { target.setAttribute('href', chrome.extension.getURL(mood + '.png')); }
+}
+
+// create an observer
+var
+// find dom element needed
+happiness = document.getElementById('happiness'),
+icon = document.querySelector('link[rel="icon"]'),
+// bind updateIndicator to icon
+updateIconIndicator = PMT.updateIndicator.bind(null, icon),
+updateIndicatorOnClassMutation = function (mutation) {
+	if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+		updateIconIndicator(mutation.target);
+	}
+},
+observer = new MutationObserver(function(mutations) {
+	mutations.forEach(updateIndicatorOnClassMutation);
 });
+// observe happiness
+observer.observe(happiness, {attributes: true});
+updateIconIndicator(happiness);
