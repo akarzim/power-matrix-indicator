@@ -12,6 +12,6 @@
 			"js": ["jquery-1.6.4.min.js", "jquery.watch.min.js", "script.js"]
 		}
 	],
-    "web_accessible_resources": [ "happy.png", "neutral.png", "sad.png" ],
+    "web_accessible_resources": [ "happy.png", "neutral.png", "sad.png", "error.png" ],
 	"homepage_url": "http://github.com/akarzim/powermatrixgameindicator"
 }
