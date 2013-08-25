@@ -8,7 +8,7 @@ When installed, it updates the favicon of powermatrixgame.com with the current m
 
 To install:
 
-  1. Download the code, e.g. `git clone git://github.com/Asana/Chrome-Extension-Example.git`
+  1. Download the code, e.g. `git clone git://github.com/akarzim/power-matrix-indicator.git`
   2. Navigate chrome to `chrome://extensions`
   3. Check the `Developer mode` toggle
   4. Click on `Load Unpacked Extension...`
