@@ -1,31 +1,46 @@
 // Power Matrix Tool namespace
 PMT = {};
 
+PMT.icon = null;
+PMT.happiness = null;
 PMT.moodList = ['happy', 'neutral', 'sad'];
-PMT.mood = function (moodEl) {
-	return PMT.moodList.reduce(function (prev, mood) { return prev || moodEl.classList.contains(mood) && mood}, false);
+PMT.mood = function () {
+    var reduceMoodList = (function (prev, mood) { return prev || this.contains(mood) && mood }).bind(PMT.happiness.classList);
+	return PMT.moodList.reduce(reduceMoodList, false);
 };
 
-PMT.updateIndicator = function (target, moodEl) {
-		var mood = PMT.mood(moodEl);
-		if (mood) { target.setAttribute('href', chrome.extension.getURL(mood + '.png')); }
+PMT.updateIconIndicator = function (mood) {
+    PMT.icon.setAttribute('href', chrome.extension.getURL(mood + '.png'));
 }
 
+PMT.updateMoodIndicator = function () {
+    var mood = PMT.mood();
+    if (mood) { PMT.updateIconIndicator(mood); }
+}
+
+
 // create an observer
-var
 // find dom element needed
-happiness = document.getElementById('happiness'),
-icon = document.querySelector('link[rel="icon"]'),
+PMT.gameWrapper = document.getElementById('game_wrapper');
+PMT.happiness = document.getElementById('happiness');
+PMT.icon = document.querySelector('link[rel="icon"]');
+
 // bind updateIndicator to icon
-updateIconIndicator = PMT.updateIndicator.bind(null, icon),
+var
 updateIndicatorOnClassMutation = function (mutation) {
-	if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-		updateIconIndicator(mutation.target);
-	}
+    if (mutation.target === PMT.happiness && mutation.type === 'attributes') {
+        PMT.updateMoodIndicator();
+    } else if (mutation.target === PMT.gameWrapper && mutation.addedNodes.length > 0 && document.querySelector('div#error_window')) {
+        PMT.updateIconIndicator('error');
+    }
 },
 observer = new MutationObserver(function(mutations) {
 	mutations.forEach(updateIndicatorOnClassMutation);
 });
+
 // observe happiness
-observer.observe(happiness, {attributes: true});
-updateIconIndicator(happiness);
+observer.observe(PMT.happiness, {attributes: true, attributeFilter: 'class'});
+PMT.updateMoodIndicator();
+
+// observe error window
+observer.observe(PMT.gameWrapper, {childList: true});
